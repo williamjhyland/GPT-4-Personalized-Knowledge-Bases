@@ -1,5 +1,6 @@
 bin/
 include/
 lib/
+api_key
 legislation.csv
 pyvenv.cfg

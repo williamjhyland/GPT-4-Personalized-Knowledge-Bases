@@ -3,14 +3,12 @@ from bs4 import BeautifulSoup
 import tiktoken
 import pandas as pd
 
-
 # Load unprocessed legislation data as a plain text file
 url = "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679&from=EN"
 response = requests.get(url)
 
 soup = BeautifulSoup(response.content, "html.parser")
 legislation = soup.text
-
 
 # Now we split the legislation into sections, each section starts with the world "Artikel"
 search_document = legislation.split("HAVE ADOPTED THIS REGULATION:")
@@ -47,3 +45,13 @@ df['tokens'] = tokens_per_section
 
 # Write to CSV
 df.to_csv('legislation.csv', index=False)
+
+df  = pd.read_csv('legislation.csv')
+df.head()
+df = df.set_index(["title", "heading"])
+print(f"{len(df)} rows in the data.")
+print(df.head(1).to_markdown())
+
+EMBEDDING_MODEL = "text-embedding-ada-002"
+COMPLETIONS_MODEL = "gpt-4"
+
